@@ -12,6 +12,10 @@
         header("location: login.php");
         exit;
     }
+
+    $user =$_SESSION['user'];
+    $task_file="data/tasks/$user.txt";
+    
     ?>
 </body>
 </html>
