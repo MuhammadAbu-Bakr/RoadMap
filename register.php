@@ -4,41 +4,58 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
-<body>
-    <?php
-    session_start();
-    if ($_SERVER['REQUEST_METHOD']==='POST') {
-        $username=trim($_POST['username']);
-        $password=trim($_POST['password']);
+<body class="bg-light d-flex align-items-center justify-content-center min-vh-100">
 
-        $file ="data/users.txt";
-        $users=file_exists($file) ? file($file, FILE_IGNORE_NEW_LINES) : [];
+<?php
+session_start();
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $username = trim($_POST['username']);
+    $password = trim($_POST['password']);
 
-        //To see username exists or not
-        foreach ($users as $user) {
-            list($u,$p) =explode("|",$user);
+    $file = "data/users.txt";
+    $users = file_exists($file) ? file($file, FILE_IGNORE_NEW_LINES) : [];
 
-            if ($u === $username) {
-            die("Usernae already exists Try a new one <a href='register.php' >Try Again</a>");
-            }
+    foreach ($users as $user) {
+        list($u, $p) = explode("|", $user);
+        if ($u === $username) {
+            die("<div class='alert alert-danger text-center'>Username already exists. <a href='register.php' class='alert-link'>Try Again</a></div>");
         }
-        //save new user
-        file_put_contents($file,"$username|$passward\n",FILE_APPEND);
-
-        //CREATING NEW FILE FOR THE NEW USER 
-        file_put_contents("data/tasks/$username.txt","");
-        echo "Registration successful. <a href='login.php' >login here</a>";
-        exit;
     }
-    ?>
-    <form method="POST">
-        <h2>Register</h2>
-        <label for=""><input name="username" placeholder="name" type="text" required></label>
-        <label for=""><input name="password" placeholder="password" type="password" required></label>
 
+    file_put_contents($file, "$username|$password\n", FILE_APPEND);
+    file_put_contents("data/tasks/$username.txt", "");
 
-        <button type="submit">Login</button>
-    </form>
+    echo "<div class='alert alert-success text-center'>Registration successful. <a href='login.php' class='alert-link'>Login here</a></div>";
+    exit;
+}
+?>
+
+<div class="card shadow-sm" style="width:100%; max-width:400px;">
+    <div class="card-body p-4">
+
+        <h3 class="text-center mb-4">Register</h3>
+
+        <form method="POST">
+            <div class="mb-3">
+                <input name="username" type="text" class="form-control" placeholder="Username" required>
+            </div>
+
+            <div class="mb-3">
+                <input name="password" type="password" class="form-control" placeholder="Password" required>
+            </div>
+
+            <button type="submit" class="btn btn-success w-100">Create Account</button>
+        </form>
+
+        <p class="text-center mt-3 mb-0">
+            Already have an account?
+            <a href="login.php" class="text-decoration-none">Login</a>
+        </p>
+
+    </div>
+</div>
+
 </body>
 </html>
