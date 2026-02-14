@@ -6,10 +6,13 @@
     <title>Document</title>
 </head>
 <body>
+X
     <?php
+    echo "<script>alert('you have been logedout.');</script>";
     session_start();
     session_destroy();
     header("location: login.php")
     ?>
+
 </body>
 </html>
